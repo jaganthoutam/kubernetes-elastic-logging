@@ -21,7 +21,7 @@ from some nodes.
 
 ## Installation
 
-Firstly update the [kibana-deployment.yaml]() file so that the ingress
+Firstly update the kibana-deployment.yaml file so that the ingress
 route matches one that points at your cluster.
 
 To install this on a cluster apply all the files.

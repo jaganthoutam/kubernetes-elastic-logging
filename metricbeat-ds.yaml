@@ -23,6 +23,9 @@ data:
       hosts: ['${ELASTICSEARCH_HOST:elasticsearch}:${ELASTICSEARCH_PORT:9200}']
       username: ${ELASTICSEARCH_USERNAME}
       password: ${ELASTICSEARCH_PASSWORD}
+    setup.kibana:
+      host: "kibana-logging:5601"
+      setup.dashboards.enabled: true
 ---
 apiVersion: v1
 kind: ConfigMap
@@ -49,7 +52,6 @@ data:
       process.include_top_n:
         by_cpu: 5      # include top 5 processes by CPU
         by_memory: 5   # include top 5 processes by memory
-
     - module: system
       period: 1m
       metricsets:
@@ -180,6 +182,7 @@ data:
         - state_replicaset
         - state_pod
         - state_container
+        - state_service
         # Uncomment this to get k8s events:
         #- event
       period: 10s
@@ -207,6 +210,7 @@ spec:
       - name: metricbeat
         image: docker.elastic.co/beats/metricbeat:6.3.0
         args: [
+          "setup", "-E", "kibana-logging:5601",
           "-c", "/etc/metricbeat.yml",
           "-e",
         ]
